@@ -1,0 +1,21 @@
+{
+  "name": "ROS 2 Jazzy Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-iot.vscode-ros"
+      ]
+    }
+  },
+  "features": {},
+  "postCreateCommand": "bash -lc 'set -e && apt-get update && apt-get install -y curl gnupg2 lsb-release build-essential python3-colcon-common-extensions ros-dev-tools && curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | apt-key add - && echo \"deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main\" > /etc/apt/sources.list.d/ros2.list && apt-get update && apt-get install -y ros-jazzy-desktop && rosdep update && mkdir -p ~/ros2_ws/src && cd ~/ros2_ws && colcon build && echo \"source /opt/ros/jazzy/setup.bash\" >> ~/.bashrc && echo \"source ~/ros2_ws/install/setup.bash\" >> ~/.bashrc'",
+  "settings": {
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "/bin/bash"
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "bash"
+  }
+}
