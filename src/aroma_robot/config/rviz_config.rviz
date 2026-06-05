@@ -1,0 +1,22 @@
+Visualization Manager:
+  Class: "rviz_visual_tools/VisualizationManager"
+  Displays:
+    - Class: rviz/Map
+      Name: Map
+      Topic: /map
+      Alpha: 0.7
+      Color Scheme: map
+      Value: 0.0
+    - Class: rviz/RobotModel
+      Name: Robot Model
+      Robot Description: robot_description
+    - Class: rviz/TF
+      Name: TF
+    - Class: rviz/Pose
+      Name: Goal Pose
+      Topic: /goal_pose
+      Color: [1.0, 0.0, 0.0]
+  Global Options:
+    Fixed Frame: map
+    Frame Rate: 30
+    Background Color: [0.05, 0.05, 0.05]
