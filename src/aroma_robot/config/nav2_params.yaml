@@ -12,11 +12,20 @@ amcl:
     base_frame_id: base_link
     global_frame_id: map
     transform_tolerance: 0.1
+    use_map_topic: false
+    scan_configuration:
+      min_angle: -1.5708
+      max_angle: 1.5708
+      angle_increment: 0.0058
+      min_range: 0.1
+      max_range: 30.0
+      max_beams: 60
 
 map_server:
   ros__parameters:
-    yaml_filename: "maps/arena_map.yaml"
+    yaml_filename: ""
     use_sim_time: false
+    publish_period: 1.0
 
 planner_server:
   ros__parameters:
@@ -25,6 +34,7 @@ planner_server:
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.5
 
 controller_server:
   ros__parameters:
@@ -32,6 +42,8 @@ controller_server:
     controller_plugins: ["FollowPath"]
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner"
+      tolerance: 0.25
+      use_final_approach_orientation: true
 
 bt_navigator:
   ros__parameters:
@@ -41,3 +53,50 @@ bt_navigator:
 recoveries_server:
   ros__parameters:
     use_sim_time: false
+
+global_costmap:
+  ros__parameters:
+    global_frame: map
+    robot_base_frame: base_link
+    update_frequency: 1.0
+    publish_frequency: 1.0
+    footprint: [[0.25, 0.25], [0.25, -0.25], [-0.25, -0.25], [-0.25, 0.25]]
+    plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+    static_layer:
+      plugin: "nav2_costmap_2d::StaticLayer"
+      map_subscribe_transient_local: true
+    obstacle_layer:
+      plugin: "nav2_costmap_2d::ObstacleLayer"
+      observation_sources: "scan"
+      scan:
+        topic: /scan
+        expected_update_rate: 20.0
+        observation_persistence: 0.0
+        data_type: "LaserScan"
+        min_height: 0.0
+        max_height: 2.0
+    inflation_layer:
+      plugin: "nav2_costmap_2d::InflationLayer"
+      inflation_radius: 0.55
+
+local_costmap:
+  ros__parameters:
+    global_frame: odom
+    robot_base_frame: base_link
+    update_frequency: 5.0
+    publish_frequency: 2.0
+    footprint: [[0.25, 0.25], [0.25, -0.25], [-0.25, -0.25], [-0.25, 0.25]]
+    plugins: ["obstacle_layer", "inflation_layer"]
+    obstacle_layer:
+      plugin: "nav2_costmap_2d::ObstacleLayer"
+      observation_sources: "scan"
+      scan:
+        topic: /scan
+        expected_update_rate: 20.0
+        observation_persistence: 0.0
+        data_type: "LaserScan"
+        min_height: 0.0
+        max_height: 2.0
+    inflation_layer:
+      plugin: "nav2_costmap_2d::InflationLayer"
+      inflation_radius: 0.55

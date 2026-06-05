@@ -46,4 +46,4 @@ colcon build --packages-select aroma_robot
 
 ## Notes
 
-This repository now includes a complete set of missing ROS 2 assets, including mission logic, navigation configuration, visualization files, and documentation.
+This repository includes complete ROS 2 assets for mission sequencing, SLAM Toolbox mapping, Nav2 path planning, and RViz visualization. The `sim_launch.py` file starts the mission controller, a simple aroma robot controller, a status publisher, and a status subscriber, plus static transform publishers and RViz support for local simulation.

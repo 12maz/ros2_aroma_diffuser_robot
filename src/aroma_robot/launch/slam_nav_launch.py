@@ -14,8 +14,23 @@ def generate_launch_description():
     nav2_launch_file = os.path.join(nav2_share, 'launch', 'bringup_launch.py')
     nav2_params = os.path.join(aroma_share, 'config', 'nav2_params.yaml')
     slam_params = os.path.join(aroma_share, 'config', 'slam_toolbox_params.yaml')
+    rviz_config = os.path.join(aroma_share, 'config', 'rviz_config.rviz')
 
     return LaunchDescription([
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='map_to_odom',
+            output='screen',
+            arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='odom_to_base_link',
+            output='screen',
+            arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_link']
+        ),
         Node(
             package='slam_toolbox',
             executable='sync_slam_toolbox_node',
@@ -29,5 +44,12 @@ def generate_launch_description():
                 'params_file': nav2_params,
                 'map': os.path.join(aroma_share, 'maps', 'arena_map.yaml'),
             }.items(),
+        ),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', rviz_config]
         ),
     ])
